@@ -4,6 +4,7 @@ import seaborn as sns
 import numpy as np
 from sklearn.svm import SVC
 from sklearn.cluster import KMeans
+from sklearn.preprocessing import OneHotEncoder
 
 if __name__ == '__main__':
     path1 = './test_data/2018-01-15min.csv'
@@ -13,11 +14,11 @@ if __name__ == '__main__':
     path5 = './test_data/2018-05-15min.csv'
     path_meta = './meta_data/metadata.csv'
 
-    df1 = pd.read_csv(path1)
-    # df2 = pd.read_csv(path2)
+    df1 = pd.read_csv(path3)
+    # df2 = pd.read_csv(path)
 
     # the month list:
-    num_of_month = 1
+    num_of_month = 3 - 1
 
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
               'November', 'December']
@@ -79,7 +80,10 @@ if __name__ == '__main__':
     df_2D = []
     df_avg = []
     df_dataid_columns = []
-    # plot all the possible results
+
+    # ------------------------------------
+    # processing the raw data
+    # ------------------------------------
     for city_name, df in zip(City_name, City_df):
 
         df_extracted = df[['dataid', 'local_15min', 'use']]
@@ -94,9 +98,9 @@ if __name__ == '__main__':
                                                                      df_extracted['local_15min']])
         # the first fillna the reframed process na
         # frame 2 include the avg of all users
-        framed2_df = framed_df.unstack(level=0, fill_value=0)
+        framed2_df = framed_df.unstack(level=0)
 
-        #　drop the columns with nan
+        # 　drop the columns with nan
         if city_name == 'Austin':
             framed2_df = framed2_df.drop(columns=[2233, 2361, 6121, 3778, 8142, 9938, 5109])
         if city_name == 'Boulder':
@@ -105,19 +109,27 @@ if __name__ == '__main__':
         framed2_df.to_csv('./processed_data/{}_in_{}.csv'.format(city_name, months[num_of_month]))
 
         # the second fillna the original data forward fill
-        framed3_df = framed2_df.fillna(method='ffill')
-        framed3_df = framed3_df.fillna(method='bfill')
+        # framed3_df = framed2_df.fillna(method='ffill', axis=1)
+        # framed3_df = framed3_df.fillna(method='bfill', axis=1)
+        # framed3_df = framed3_df.dropna(how='all', axis=1)
+        framed3_df = framed2_df.fillna(value=0)
 
         # drop the last index value
         framed3_df = framed3_df.drop(framed3_df.tail().index[-1])
         framed3_df.to_csv('./fillna_with_0/{}_in_{}_no_na.csv'.format(city_name, months[num_of_month]))
-        df_dataid_columns.append(framed2_df)
+        df_dataid_columns.append(framed3_df)
 
         # fill the nan
         framed_df_np = framed3_df.to_numpy()
         average_the_dataid = []
         # document the value
         df_2D.append(framed_df_np)
+
+        # utilize framed3 for generation in this part
+
+        # ------------------------------------
+        # do average operation in the whole month
+        # ------------------------------------
         # average according to the dataid in the whole month
         for k in range(framed_df_np.shape[1]):
             data_month = framed_df_np[:, k]
@@ -138,7 +150,9 @@ if __name__ == '__main__':
         plt.show()
         plt.close()
 
-        # plot the specific day comparison picture
+        # ------------------------------------
+        # plot the specific day of different users
+        # ------------------------------------
         day_of_month = 2
         day_points = 96
         start = (day_of_month - 1) * day_points
@@ -157,7 +171,30 @@ if __name__ == '__main__':
         plt.show()
         plt.close()
 
-    # plot the classifying results
+    # ------------------------------------
+    # prepared generate proper data profile 96
+    # ------------------------------------
+    k = 0
+    for df_np in df_2D:
+        num_of_user = df_np.shape[1]
+        df_np_flatten = df_np.flatten()
+        df_labels = pd.cut(df_np_flatten, bins=96, labels=np.arange(96), right=False)
+        df_labels = np.reshape(df_labels, (96 * 30, -1))
+        df_labels = df_labels.transpose()
+        df_labels = df_labels.reshape((num_of_user, -1, 96))
+        df_labels = df_labels.reshape((-1, 96))
+        df_one_hot = np.zeros((num_of_user * 30, 96, 96))
+        for i in range(df_labels.shape[0]):
+            for j in range(df_labels.shape[1]):
+                for m in range(df_labels[i, j]):
+                    df_one_hot[i, j, m] = 1
+        np.save('./df_one_hot/{}_one_hot'.format(City_name[k]), df_one_hot)
+        k = k + 1
+    del k
+
+    # ------------------------------------
+    # do KMeans classification
+    # ------------------------------------
 
     kmeans_models = []
     kmeans_labels = []
@@ -167,7 +204,7 @@ if __name__ == '__main__':
     colors_classic = ['b', 'g', 'r', 'c', 'm', 'y', 'k', '']
     colors_html = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2',
                    '#7f7f7f', '#bcbd22', '#17becf']
-    # do KMeans classification
+
     for df_np in df_2D:
         df_np_t = np.transpose(df_np)
         kmeans_models.append(KMeans(n_clusters=n_clusters, random_state=0).fit(df_np_t))
@@ -207,7 +244,9 @@ if __name__ == '__main__':
         plt.show()
         plt.close()
 
+    # ------------------------------------
     # analysis the label's relative coefficient with other features, different months show different features????
+    # ------------------------------------
     meta_data_extracted = meta_data[meta_data['labels'].notnull()]
     meta_data_extracted_corr_pearson = meta_data_extracted.corr(method='pearson')['labels']
     meta_data_extracted_corr_kendall = meta_data_extracted.corr(method='kendall')['labels']
