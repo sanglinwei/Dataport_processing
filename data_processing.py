@@ -12,13 +12,14 @@ if __name__ == '__main__':
     path3 = './test_data/2018-03-15min.csv'
     path4 = './test_data/2018-04-15min.csv'
     path5 = './test_data/2018-05-15min.csv'
+    path6 = './test_data/2018-06-15min.csv'
     path_meta = './meta_data/metadata.csv'
 
-    df1 = pd.read_csv(path3)
+    df1 = pd.read_csv(path5)
     # df2 = pd.read_csv(path)
 
     # the month list:
-    num_of_month = 3 - 1
+    num_of_month = 6 - 1
 
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
               'November', 'December']
@@ -109,10 +110,10 @@ if __name__ == '__main__':
         framed2_df.to_csv('./processed_data/{}_in_{}.csv'.format(city_name, months[num_of_month]))
 
         # the second fillna the original data forward fill
-        # framed3_df = framed2_df.fillna(method='ffill', axis=1)
-        # framed3_df = framed3_df.fillna(method='bfill', axis=1)
-        # framed3_df = framed3_df.dropna(how='all', axis=1)
-        framed3_df = framed2_df.fillna(value=0)
+        framed3_df = framed2_df.fillna(method='ffill', axis=1)
+        framed3_df = framed3_df.fillna(method='bfill', axis=1)
+        framed3_df = framed3_df.dropna(how='all', axis=1)
+        # framed3_df = framed2_df.fillna(value=0)
 
         # drop the last index value
         framed3_df = framed3_df.drop(framed3_df.tail().index[-1])
