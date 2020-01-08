@@ -11,7 +11,7 @@ if __name__ == '__main__':
               'November', 'December']
     city = ['Austin', 'Boulder']
     num_city = 0
-    num_mon = 0
+    num_mon = 5
     path1 = './processed_data/{}_in_{}.csv'.format(city[num_city], months[num_mon])
     path2 = './processed_data/{}_in_{}.csv'.format(city[num_city], months[num_mon])
 
@@ -42,20 +42,31 @@ if __name__ == '__main__':
     df_pro = df_pro.set_index('local_15min')
     df_pro.to_csv('./processed_data_connected/{}_in_{}_connected.csv'.format(city[num_city], months[num_mon]))
 
-
-
     # ------------------------------------
     # plot the user's histogram
     # ------------------------------------
-    df_user = df_pro['59'].to_numpy().reshape((96, -1))
-    df_user_mean = np.mean(df_user, axis=1)
+    df_user = df_pro['59'].to_numpy().reshape((-1, 96))
+    df_user_mean = np.mean(df_user, axis=0)
     fig, ax = plt.subplots(1, 1)
     for k in range(27):
-        plt.plot(df_user[:, k])
-    plt.plot(df_user_mean)
+        plt.plot(df_user[k, :])
+    plt.xlabel('time points')
+    plt.ylabel('Power/kW')
     plt.show()
     plt.close()
 
+    # ------------------------------------
+    # plot the user's average histogram
+    # ------------------------------------
+    fig, ax = plt.subplots(1, 1)
+    for col in df_pro.columns:
+        df_user = df_pro[col].to_numpy().reshape((-1, 96))
+        df_user_mean = np.mean(df_user, axis=0)
+        plt.plot(df_user_mean)
+    plt.xlabel('time points')
+    plt.ylabel('Power/kW')
+    plt.show()
+    plt.close()
 
 
 

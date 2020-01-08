@@ -15,11 +15,11 @@ if __name__ == '__main__':
     path6 = './test_data/2018-06-15min.csv'
     path_meta = './meta_data/metadata.csv'
 
-    df1 = pd.read_csv(path5)
+    df1 = pd.read_csv(path1)
     # df2 = pd.read_csv(path)
 
     # the month list:
-    num_of_month = 6 - 1
+    num_of_month = 1 - 1
 
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
               'November', 'December']
