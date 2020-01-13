@@ -65,10 +65,34 @@ if __name__ == '__main__':
         plt.plot(df_user_mean)
     plt.xlabel('time points')
     plt.ylabel('Power/kW')
+    plt.title('average users')
     plt.show()
     plt.close()
 
 
-
+#     # scatter code
+# fig, ax = plt.subplots(1, 1)
+# col = df_pro.columns[5]
+# print('the average of {}'.format(col))
+# df_user = df_pro[col].to_numpy().reshape((-1, 96))
+# for j in range(df_user.shape[0]):
+#     plt.scatter(np.arange(96), df_user[j, :], c='k', alpha=0.5)
+# plt.xlabel('time points')
+# plt.ylabel('Power/kW')
+# plt.title('average users {}'.format(col))
+# plt.show()
+# plt.close()
+#
+# for col in df_pro.columns:
+#     fig, ax = plt.subplots(1, 1)
+#     print('the average of {}'.format(col))
+#     df_user = df_pro[col].to_numpy().reshape((-1, 96))
+#     for j in range(df_user.shape[0]):
+#         plt.scatter(np.arange(96), df_user[j, :], c='k', alpha=0.3, s=4)
+#     plt.xlabel('time points')
+#     plt.ylabel('Power/kW')
+#     plt.title('average users {}'.format(col))
+#     plt.show()
+#     plt.close()
 
 
