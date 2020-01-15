@@ -260,7 +260,7 @@ if __name__ == '__main__':
     # total_amount_of_pv: -0.110623
     # lower_level_square_footage: 0.108677
 
-#     # scatter code
+# scatter code
 # fig, ax = plt.subplots(1, 1)
 # col = df_pro.columns[5]
 # print('the average of {}'.format(col))
@@ -272,3 +272,5 @@ if __name__ == '__main__':
 # plt.title('average users {}'.format(col))
 # plt.show()
 # plt.close()
+
+#

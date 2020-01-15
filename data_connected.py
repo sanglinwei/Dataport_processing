@@ -28,7 +28,7 @@ if __name__ == '__main__':
     df_pro = df_pro.drop(['avg'], axis=1)
     df_pro['avg'] = df_pro.mean(axis=1)
 
-    if path1 == './processed_data/{}_in_{}.csv'.format(city[1-1], months[3-1]):
+    if path1 == './processed_data/{}_in_{}.csv'.format(city[1 - 1], months[3 - 1]):
         df_replace = df_pro.iloc[967 - 96 + 1:967 - 96 + 1 + 4]
         replace_local_15min = ['2018-03-11 02:00:00-05', '2018-03-11 02:15:00-05', '2018-03-11 02:30:00-05',
                                '2018-03-11 02:45:00-05']
@@ -69,7 +69,6 @@ if __name__ == '__main__':
     plt.show()
     plt.close()
 
-
 #     # scatter code
 # fig, ax = plt.subplots(1, 1)
 # col = df_pro.columns[5]
@@ -82,7 +81,9 @@ if __name__ == '__main__':
 # plt.title('average users {}'.format(col))
 # plt.show()
 # plt.close()
-#
+# ------------------------------------------------
+# plot scatter data
+# ------------------------------------------------
 # for col in df_pro.columns:
 #     fig, ax = plt.subplots(1, 1)
 #     print('the average of {}'.format(col))
@@ -94,5 +95,42 @@ if __name__ == '__main__':
 #     plt.title('average users {}'.format(col))
 #     plt.show()
 #     plt.close()
-
+# ------------------------------------------------
+# plot average data
+# ------------------------------------------------
+# for col in df_pro.columns:
+#     fig, ax = plt.subplots(1, 1)
+#     df_user = df_pro[col].to_numpy().reshape((-1, 96))
+#     df_user_mean = np.mean(df_user, axis=0)
+#     plt.plot(df_user_mean)
+#     plt.xlabel('time points')
+#     plt.ylabel('Power/kW')
+#     plt.title('average users {}'.format(col))
+#     plt.show()
+#     plt.close()
+# ------------------------------------------------
+# plot box figure
+# ------------------------------------------------
+# for col in df_pro.columns:
+#     fig, ax = plt.subplots(1, 1)
+#     df_user = df_pro['59'].to_numpy().reshape((-1, 96))
+#     df_user_pd = pd.DataFrame(df_user, columns=np.arange(96))
+#     df_user_pd.boxplot(column=list(np.arange(0, 96, 4)))
+#     plt.show()
+#     plt.close()
+# ------------------------------------------------
+# plot hist figure
+# ------------------------------------------------
+# for col in df_pro.columns:
+#     fig, ax = plt.subplots(1, 1)
+#     df_pro[col].plot.hist(bins=12)
+#     plt.savefig('./month_load_image/hist_plot/hist_user_{}.png'.format(col))
+#     plt.show()
+#     plt.close()
+# ------------------------------------------------
+# meta_data analysis
+# ------------------------------------------------
+# meta_data = pd.read_csv('./meta_data/metadata.csv')
+# col_df = df_pro.columns.drop(['avg', 'sum'])
+# meta_data_extracted = pd.DataFrame(meta_data, index=col_df)
 
