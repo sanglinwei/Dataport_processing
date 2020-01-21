@@ -18,3 +18,6 @@
 
 ## box plot problems
 - the trade off between uncertainty and load power
+- the uncertainty whether can reflect the adjust potential
+- the area is also a kind of privacy protection?????
+- 
