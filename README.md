@@ -15,3 +15,9 @@
 - metadata.csv 是对dataid 的描述，包括所在城市，房屋设施等；
 - image 中文件是同一用户在一个月内的负荷变化, 具有较强规律性
 - 单位：kW
+
+## box plot problems
+- the trade off between uncertainty and load power
+- the uncertainty whether can reflect the adjust potential
+- the area is also a kind of privacy protection?????
+- 

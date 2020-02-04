@@ -259,3 +259,18 @@ if __name__ == '__main__':
     # amount_of_east_facing_pv:-0.140372
     # total_amount_of_pv: -0.110623
     # lower_level_square_footage: 0.108677
+
+# scatter code
+# fig, ax = plt.subplots(1, 1)
+# col = df_pro.columns[5]
+# print('the average of {}'.format(col))
+# df_user = df_pro[col].to_numpy().reshape((-1, 96))
+# df_user_mean = np.mean(df_user, axis=0)
+# plt.plot(df_user_mean)
+# plt.xlabel('time points')
+# plt.ylabel('Power/kW')
+# plt.title('average users {}'.format(col))
+# plt.show()
+# plt.close()
+
+#
