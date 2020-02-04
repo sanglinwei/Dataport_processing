@@ -42,6 +42,7 @@ if __name__ == '__main__':
     df_pro = df_pro.set_index('local_15min')
     df_pro.to_csv('./processed_data_connected/{}_in_{}_connected.csv'.format(city[num_city], months[num_mon]))
 
+    df_pro = pd.read_csv('./processed_data_connected/{}_in_{}_connected.csv'.format(city[num_city], months[num_mon]))
     # ------------------------------------
     # plot the user's histogram
     # ------------------------------------
